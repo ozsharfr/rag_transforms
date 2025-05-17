@@ -1,8 +1,8 @@
 
-from langchain.vectorstores import InMemoryVectorStore
+from langchain_core.vectorstores import InMemoryVectorStore
 from langchain_ollama import OllamaEmbeddings
 
-def rag_basic(chunks: list[str], question: str, embeddings, llm, k=3) -> list[str]:
+def rag_basic(chunks: list[str], question: str, k=3) -> list[str]:
     """
     Perform a basic RAG (Retrieval-Augmented Generation) process.
     This function retrieves relevant documents based on the provided question and
@@ -26,8 +26,8 @@ def rag_basic(chunks: list[str], question: str, embeddings, llm, k=3) -> list[st
             embedding=embeddings,
         )
 
-    retriever = vectorstore.as_retriever(k=3)
-    retrieved_documents = retriever.invoke(question)
+    retriever = vectorstore.as_retriever(k=k)
+    retrieved_documents = retriever.get_relevant_documents(question)
     retrieved_documents = [doc.page_content for doc in retrieved_documents]
 
     return retrieved_documents

@@ -1,9 +1,10 @@
 from sentence_transformers import SentenceTransformer, util
+from config import Config
 
-def compare_answers(llm_response:str, reference_texts : list[str] , k:int = 5) -> tuple[list[str], list[float]]:
+def nearest_sentences(llm_response:str, reference_texts : list[str] , k:int = 5) -> tuple[list[str], list[float]]:
     best_chunks = []
     # Load BioBERT model
-    model = SentenceTransformer("dmis-lab/biobert-base-cased-v1.1")
+    model = SentenceTransformer(Config.TRANSFORMER_MODEL)
     #model = SentenceTransformer("microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext")
 
     # Compute embeddings

@@ -1,6 +1,7 @@
 import re
 from langchain.prompts import PromptTemplate
 
+
 def get_num(score_text):
     pattern = r'(\d+)\s+out of'
     ee = re.search(pattern, score_text)
