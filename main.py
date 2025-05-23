@@ -25,7 +25,8 @@ def main():
         logger.error("Document not found or empty.")
         return
     
-    llm_model = OllamaLLM(model=Config.MODEL_NAME)
+    llm_model = OllamaLLM(model=Config.MODEL_NAME, base_url=Config.OLLAMA_HOST)
+    #llm_model = OllamaLLM(model=Config.MODEL_NAME)
 
     for chunk_size in [400,600, 800]:
         

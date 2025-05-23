@@ -7,6 +7,7 @@ load_dotenv()
 class Config:
     FILE_PATH = os.getenv("FILE_PATH", "abstracts_park.txt")
     MODEL_NAME = os.getenv("MODEL_NAME", "llama3")
+    MODEL_NAME_GCP = os.getenv("MODEL_NAME_GCP", "gpt-3.5-turbo")
     RETRIEVE_TOP_K = int(os.getenv("RETRIEVE_TOP_K", 5))
     MIN_RELEVANCE_SCORE = int(os.getenv("MIN_RELEVANCE_SCORE", 5))
     CHUNK_SIZES = list(map(int, os.getenv("CHUNK_SIZES", "400,600,800").split(',')))
@@ -15,6 +16,7 @@ class Config:
     TRANSFORMER_MODEL = os.getenv("TRANSFORMER_MODEL", "microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext")
     LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     LOG_FILE = "app.log"
+    OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://localhost:11434")
 
     @staticmethod
     def setup_logging():
@@ -29,3 +31,6 @@ class Config:
         logging.getLogger().addHandler(console_handler)
 
 Config.setup_logging()
+
+
+    
