@@ -3,6 +3,7 @@
 ## LLM-Powered RAG Document Analyzer
 
 This project implements a **Retrieval-Augmented Generation (RAG)** pipeline using **LangChain**, **Ollama**, and **custom scoring functions** to extract and score relevant answers from large documents — particularly designed for tasks like answering questions from medical or scientific texts.
+
 It iterates over few chunk size possibilities , though this may not be crucial
 
 ---
@@ -18,7 +19,7 @@ It iterates over few chunk size possibilities , though this may not be crucial
 
 ---
 
-## 🧰 Technologies Used
+## Technologies Used
 
 * **LangChain** with `OllamaLLM` - model can be modified as requested
 * **Transformers for sentence embedding**
@@ -47,7 +48,7 @@ It iterates over few chunk size possibilities , though this may not be crucial
 
 ---
 
-## 🧪 How It Works
+## How It Works
 
 1. **Read and clean the document** from a given file path.
 2. **Preprocess the text** by removing irrelevant lines.
@@ -63,7 +64,7 @@ It iterates over few chunk size possibilities , though this may not be crucial
 
 ---
 
-## ⚙️ Configuration
+## Configuration
 
 All runtime parameters are stored in `config.py`, including:
 
@@ -76,8 +77,8 @@ All runtime parameters are stored in `config.py`, including:
 
 ---
 
-## 🧑‍💻 Running the Script
-
+## Running the Script 
+### Option 1
 1. Start your Ollama server locally:
 
    ```bash
@@ -91,6 +92,10 @@ All runtime parameters are stored in `config.py`, including:
    ```
 
 3. View results in your configured log file.
+
+### Option 2
+
+1. Run from app.py
 
 ---
 
