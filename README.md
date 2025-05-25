@@ -1,21 +1,18 @@
 
 
-## LLM-Powered RAG Document Analyzer
+## LLM-Powered RAG medical papers Analyzer
 
-This project implements a **Retrieval-Augmented Generation (RAG)** pipeline using **LangChain**, **Ollama**, and **custom scoring functions** to extract and score relevant answers from large documents — particularly designed for tasks like answering questions from medical or scientific texts.
-
-It iterates over few chunk size possibilities , though this may not be crucial
+This project implements a **Retrieval-Augmented Generation (RAG)** pipeline using **LangChain**, **Ollama**,**sentence transformers** and **custom scoring functions** to extract and score relevant answers from large documents — for medical papers.
 
 ---
 
-##  Features
+##  Features & explanations
 
 * **Document preprocessing**: Filters noise like author lines and merge conflicts.
-* **Chunking**: Splits documents into overlapping chunks of varying sizes.
-* **Prompting**: Uses initial prompting and refined RAG prompts.
+* **Chunking**: Splits documents into overlapping chunks of varying sizes  -iterates over multiple chunks size.
+* **Embedding chunks**: Uses **Sentence transformers. LLM-based embeddings actually performed worse - both in performance and in accuracy**
 * **Similarity search**: Retrieves top relevant chunks using a sentence similarity model.
-* **LLM scoring**: Ranks retrieved chunks using an LLM.
-* **Logging**: Tracks all steps with timestamped logs.
+* **LLM scoring**: Final chunks relevance is **scored by a dedicated prompt**.
 
 ---
 
