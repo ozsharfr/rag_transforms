@@ -35,7 +35,7 @@ This project implements a **Retrieval-Augmented Generation (RAG)** pipeline usin
 ├── config.py                  # Configuration variables (paths, model names, etc.)
 ├── transformers_embed.py      # Similarity search with sentence embeddings
 ├── prompts_formatted.py       # Prompt templates and LLM interaction logic
-├── result_score.py            # Scoring functions using LLM
+├── result_score_all.py        # Scoring functions using LLM
 ├── text_split.py              # Document chunking logic
 ├── utils/
 │   ├── doc_parser.py          # Filters noise (author/conflict lines)

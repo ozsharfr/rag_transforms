@@ -10,7 +10,7 @@ class Config:
     MODEL_NAME_GCP = os.getenv("MODEL_NAME_GCP", "gpt-3.5-turbo")
     RETRIEVE_TOP_K = int(os.getenv("RETRIEVE_TOP_K", 5))
     MIN_RELEVANCE_SCORE = int(os.getenv("MIN_RELEVANCE_SCORE", 5))
-    CHUNK_SIZES = list(map(int, os.getenv("CHUNK_SIZES", "400,600,800").split(',')))
+    CHUNK_SIZE = int(os.getenv("CHUNK_SIZE", 600))
     CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", 300))
     LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").upper()
     TRANSFORMER_MODEL = os.getenv("TRANSFORMER_MODEL", "microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext")
