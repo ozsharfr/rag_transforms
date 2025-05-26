@@ -88,7 +88,7 @@ def run_rag(query: str = "What are Parkinson's treatments?"):
             with redirect_stdout(stdout_capture):
                 result = main(query=query, log_stream=log_capture)
                 # If main returns the final answer, capture it
-                final_answer = result
+                embedded_docs = result
         except Exception as main_error:
             logger.error(f"Error in main: {str(main_error)}")
             

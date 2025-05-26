@@ -1,5 +1,5 @@
 from langchain_ollama import OllamaLLM
-from transformers_embed import nearest_sentences
+from transformers_embed import nearest_sentences , embed_text
 import time 
 from text_split import split_into_chunks
 from prompts_formatted  import format_prompt_initial, format_rag_prompt
@@ -16,6 +16,31 @@ os.environ['TRANSFORMERS_VERBOSITY'] = 'error'
 
 logger = setup_logger(log_file=Config.LOG_FILE, log_level=Config.LOG_LEVEL)
 
+def final_prompt_based_on_retrieved_docs(retrieved_documents, query, llm_model, scored_docs):
+        """
+        Formats the final prompt based on the retrieved documents and the query.
+        
+        Args:
+            retrieved_documents (list): List of retrieved documents.
+            query (str): The original query.
+            llm_model: The language model to use for formatting.
+        
+        Returns:
+            str: The formatted prompt.
+        """
+        logger.info (f"Scored docs: {scored_docs}")
+        filterd_documents = [ doc for doc, score in zip(retrieved_documents, scored_docs) if score >= Config.MIN_RELEVANCE_SCORE]
+        if len(filterd_documents) == 0:
+            logger.info ("No relevant documents found")
+        else:
+            final_result = format_rag_prompt(filterd_documents, query, llm = llm_model)
+            # Check the below:
+            final_answer_score = calc_score_from_llm([final_result], question=query, llm = llm_model)
+            logger.info (f"Final answer score: {final_answer_score}")
+            logger.info (f"Final answer: {final_result}")
+        logger.info (f" Time taken: {(time.time() - t):.2f} seconds")
+        logger.info ("=========================")
+    
 def main(query ="What are the possible parkinson treatments",  log_stream=None):
     
     # Read the document and split it into chunks
@@ -39,23 +64,18 @@ def main(query ="What are the possible parkinson treatments",  log_stream=None):
 
     logger.info(f"Chunk size: {chunk_size} , number of chunks: {len(chunks)}")
 
+    reference_embeddings = embed_text(text=chunks)
+
     result_llama = format_prompt_initial(query=query, llm = llm_model)
 
-    retrieved_documents , scrs = nearest_sentences(llm_response = result_llama , reference_texts =chunks)
+    retrieved_documents , scrs = nearest_sentences(llm_response = result_llama , reference_texts =chunks,
+                                                                         reference_embeddings=reference_embeddings)
+    
     scored_docs = calc_score_from_llm(retrieved_documents, question=query, llm = llm_model)
-    logger.info (f"Scored docs: {scored_docs}")
-    filterd_documents = [ doc for doc, score in zip(retrieved_documents, scored_docs) if score >= Config.MIN_RELEVANCE_SCORE]
-    if len(filterd_documents) == 0:
-        logger.info ("No relevant documents found")
-    else:
-        final_result = format_rag_prompt(filterd_documents, query, llm = llm_model)
-        # Check the below:
-        final_answer_score = calc_score_from_llm([final_result], question=query, llm = llm_model)
-        logger.info (f"Final answer score: {final_answer_score}")
-        logger.info (f"Final answer: {final_result}")
-        print (f"Final answer: {final_result}")
-    logger.info (f" Time taken: {(time.time() - t):.2f} seconds")
-    logger.info ("=========================")
+
+    final_prompt_based_on_retrieved_docs(retrieved_documents, query, llm_model, scored_docs)
+
+    return reference_embeddings
 
 if __name__ == "__main__":
     main()

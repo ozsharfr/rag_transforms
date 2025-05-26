@@ -1,15 +1,25 @@
 from sentence_transformers import SentenceTransformer, util
 from config import Config
 
-def nearest_sentences(llm_response:str, reference_texts : list[str] , k:int = 5) -> tuple[list[str], list[float]]:
+def embed_text(text: str) -> list[float]:
+    """
+    Embed a given text using the SentenceTransformer model.
+    
+    Args:
+        text (str): The text to embed.
+        
+    Returns:
+        list[float]: The embedding of the text.
+    """
+    model = SentenceTransformer(Config.TRANSFORMER_MODEL)
+    embedding = model.encode(text, convert_to_tensor=True)
+    return embedding
+
+def nearest_sentences(llm_response:str, reference_texts : list[str] , k:int = 5, reference_embeddings = None ) -> tuple[list[str], list[float]]:
     best_chunks = []
     # Load BioBERT model
-    model = SentenceTransformer(Config.TRANSFORMER_MODEL)
-    #model = SentenceTransformer("microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext")
 
-    # Compute embeddings
-    response_embedding = model.encode(llm_response, convert_to_tensor=True)
-    reference_embeddings = model.encode(reference_texts, convert_to_tensor=True)
+    response_embedding = embed_text(llm_response)
 
     # Calculate cosine similarities
     cosine_scores = util.cos_sim(response_embedding, reference_embeddings)
