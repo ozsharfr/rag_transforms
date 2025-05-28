@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse, JSONResponse
-from main1 import main
+from main import main
 import io
 import logging
 from contextlib import redirect_stdout
