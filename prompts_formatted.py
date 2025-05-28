@@ -49,7 +49,7 @@ def format_rag_prompt(retrieved_docs: list[str], query: str, llm ) -> str:
         {query}
         Task:
         1. Answer the query **based solely on the provided context**.
-        2. **If information is not available in the context, clearly state: 'No relevant information found in the context.'**
+        2. **If information of a document is not relevant to question, clearly state: 'No relevant information found in the context.'**
         Answer:"""
     )
     

@@ -13,10 +13,12 @@ class Config:
     CHUNK_SIZE = int(os.getenv("CHUNK_SIZE", 600))
     CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", 300))
     LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").upper()
+    EMAIL_FOR_PUBMED = os.getenv("EMAIL_FOR_PUBMED", "")
     TRANSFORMER_MODEL = os.getenv("TRANSFORMER_MODEL", "microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext")
     LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     LOG_FILE = "app.log"
     OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://localhost:11434")
+    BOOL_CHROMADB = os.getenv("BOOL_CHROMADB", "True").lower() in ['true', '1', 'yes']
 
     @staticmethod
     def setup_logging():

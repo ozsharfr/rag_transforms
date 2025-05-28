@@ -1,6 +1,8 @@
 from sentence_transformers import SentenceTransformer, util
 from config import Config
 
+model = SentenceTransformer(Config.TRANSFORMER_MODEL)
+
 def embed_text(text: str) -> list[float]:
     """
     Embed a given text using the SentenceTransformer model.
@@ -11,7 +13,7 @@ def embed_text(text: str) -> list[float]:
     Returns:
         list[float]: The embedding of the text.
     """
-    model = SentenceTransformer(Config.TRANSFORMER_MODEL)
+    
     embedding = model.encode(text, convert_to_tensor=True)
     return embedding
 
