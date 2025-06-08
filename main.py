@@ -52,7 +52,7 @@ def process_document(document_text: str) -> List[str]:
 
 def get_reference_embeddings(chunks: List[str], cached_embeddings: Optional[List] = None) -> List:
     """Return cached or new reference embeddings."""
-    if cached_embeddings:
+    if cached_embeddings is not None:
         logger.info("Using cached embeddings - skipping embedding step")
         return cached_embeddings
 

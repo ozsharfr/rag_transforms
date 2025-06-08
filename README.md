@@ -40,7 +40,15 @@ This project implements a **Retrieval-Augmented Generation (RAG)** pipeline usin
 ├── utils/
 │   ├── doc_parser.py          # Filters noise (author/conflict lines)
 │   ├── file_reader.py         # Reads documents from disk
-│   └── logger.py              # Logging setup
+│   └── logger.py 
+├── static/                   # GUI relates
+|   ├── css/                  # GUI relates
+|   ├── js/                   # GUI relates
+├── templates/                # GUI relates
+├── data/                     # Data - derieved from PUBMED interface
+    |── N_abstracts.txt
+
+             # Logging setup
 ```
 
 ---

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/styles.css') }}">
+</head>
+<body>
+    <h2>{{ heading }}</h2>
+    
+    <div id="conversation-history"></div>
+    
+    <div class="input-section">
+        <p>Enter your query below:</p>
+        <input type="text" id="query" placeholder="{{ placeholder }}" class="query-input">
+        <button id="runButton" onclick="runPipeline()" class="run-button">Run RAG</button>
+        <button onclick="clearHistory()" class="clear-button">Clear History</button>
+    </div>
+
+    <script src="{{ url_for('static', path='/js/app.js') }}"></script>
+</body>
+</html>
