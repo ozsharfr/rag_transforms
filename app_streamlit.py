@@ -18,12 +18,6 @@ if "embeddings" not in st.session_state:
     st.session_state.embeddings = None
     st.session_state.document_processed = False
 
-# cache = {
-#     "embeddings": None,
-#     "chunks": None,
-#     "document_processed": False
-# }
-
 logger = logging.getLogger()
 
 st.title("Basic chat - based on papers archive")
@@ -68,13 +62,6 @@ if query := st.chat_input("Ask your question here"):
         logging.error(f"Error in main: {str(main_error)}")
         final_answer = "Sorry, there was an error processing your request."
 
-    # Remove the handler so logs don't duplicate
-    #* logging.getLogger().removeHandler(handler)
-    # Show also logs 
-    # Display logs in an expandable section
-    #* with st.expander("Show logs"):
-    #*    st.text(log_stream.getvalue())
-    # Show final answer
     st.session_state.messages.append({"role": "assistant", "content": final_answer})
     with st.chat_message("assistant"):
         st.write(final_answer)
