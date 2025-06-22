@@ -1,5 +1,6 @@
 import chromadb
-from sentence_transformers import SentenceTransformer
+from sentence_transformers import SentenceTransformer 
+from transformers_embed import embed_text
 from config import Config
 from utils.logger import setup_logger
 
@@ -10,6 +11,10 @@ logger = setup_logger(log_file=Config.LOG_FILE, log_level=Config.LOG_LEVEL)
 
 # Initialize ChromaDB client and collection
 def run_chroma(docs):
+    logger.info("Applying ChromaDB")
+    # Initialize Chroma client and collection
+    client = chromadb.PersistentClient(path="./chroma_data")
+
     collection = client.create_collection('docs',
                             metadata={"hnsw:space": "cosine"})
     # Embed and add documents to ChromaDB
