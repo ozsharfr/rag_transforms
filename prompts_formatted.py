@@ -21,6 +21,7 @@ def format_prompt_initial(query: str, llm ) -> str:
     input_data = {"query": query}
     result = llm_chain.invoke(input_data)
 
+    result = result.content
     return result
 
 def format_rag_prompt(retrieved_docs: list[str], query: str, llm ) -> str:

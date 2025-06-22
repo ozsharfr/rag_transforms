@@ -5,6 +5,7 @@ from typing import Optional, List, Tuple, Union
 
 from config import Config
 from langchain_ollama import OllamaLLM
+from langchain_groq import ChatGroq
 from transformers_embed import nearest_sentences, embed_text
 from text_split import split_into_chunks
 from prompts_formatted import format_prompt_initial, format_rag_prompt
@@ -78,7 +79,7 @@ def retrieve_documents(modified_query: str, reference_embeddings: List, chunks: 
 def build_final_answer(
     retrieved_docs: List[str],
     query: str,
-    llm_model: OllamaLLM,
+    llm_model: ChatGroq,
     relevance_scores: List[Union[int, float]],
     start_time: float
 ) -> str:
@@ -91,6 +92,7 @@ def build_final_answer(
         return "No relevant documents found for the given query."
 
     final_result = format_rag_prompt(relevant_docs, query, llm=llm_model)
+    final_result = final_result.content
     logger.info(f"Final answer: {final_result}")
     logger.info(f"Time taken: {time.time() - start_time:.2f} seconds")
     logger.info("=========================")
@@ -120,7 +122,9 @@ def main(
         return None, "Failed to load document."
 
     chunks = process_document(document_text)
-    llm_model = OllamaLLM(model=Config.MODEL_NAME, base_url=Config.OLLAMA_HOST)
+    #llm_model = OllamaLLM(model=Config.MODEL_NAME, base_url=Config.OLLAMA_HOST)
+    llm_model = ChatGroq(model="llama-3.3-70b-versatile", api_key="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")
+
 
     reference_embeddings = get_reference_embeddings(chunks, cached_embeddings)
 
