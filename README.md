@@ -1,141 +1,75 @@
+# Medical Document Chat System
 
+A RAG (Retrieval Augmented Generation) system for querying medical documents using advanced NLP techniques. The system processes medical papers/abstracts and allows users to ask questions through a chat interface.
 
-## LLM-Powered RAG medical papers Analyzer
+## Features
 
-This project implements a **Retrieval-Augmented Generation (RAG)** pipeline using **LangChain**, **Ollama**,**sentence transformers** and **custom scoring functions** to extract and score relevant answers from large documents — for medical papers.
+- **Document Processing**: Automatically chunks and embeds medical documents
+- **Smart Retrieval**: Uses sentence transformers and ChromaDB for efficient document retrieval
+- **Medical Focus**: Optimized for biomedical content with PubMedBERT embeddings
+- **Chat Interface**: Streamlit-based web interface for easy interaction
+- **Caching**: Intelligent caching of embeddings for faster subsequent queries
+- **Flexible Backend**: Supports both Ollama and Groq LLM providers
 
----
+## Quick Start
 
-##  Features & explanations
+1. **Install dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-* **Document preprocessing**: Filters noise like author lines and merge conflicts.
-* **Chunking**: Splits documents into overlapping chunks of varying sizes  -iterates over multiple chunks size.
-* **Embedding chunks**: Uses **Sentence transformers. LLM-based embeddings actually performed worse - both in performance and in accuracy**
-* **Similarity search**: Retrieves top relevant chunks using a sentence similarity model.
-* **LLM scoring**: Final chunks relevance is **scored by a dedicated prompt**.
+2. **Set up environment variables**:
+   Create a `.env` file with:
+   ```
+   GROQ_API_KEY=your_groq_api_key_here
+   FILE_PATH=path/to/your/medical/documents.txt
+   OLLAMA_HOST=http://localhost:11434  # if using Ollama
+   ```
 
----
+3. **Run the application**:
+   ```bash
+   streamlit run app_streamlit.py
+   ```
 
-## Technologies Used
-
-* **LangChain** with `OllamaLLM` - model can be modified as requested
-* **Transformers for sentence embedding**
-* **Custom utilities** for chunking, filtering, logging
-* **Ollama** for local LLM inference
-* **Python 3.10+**
-
----
-
-##  Project Structure
-
-```
-.
-├── app.py                     # Wrap in app , if a docker is needed
-├── main.py                    # Main pipeline script
-├── config.py                  # Configuration variables (paths, model names, etc.)
-├── transformers_embed.py      # Similarity search with sentence embeddings
-├── prompts_formatted.py       # Prompt templates and LLM interaction logic
-├── result_score_all.py        # Scoring functions using LLM
-├── text_split.py              # Document chunking logic
-├── utils/
-│   ├── doc_parser.py          # Filters noise (author/conflict lines)
-│   ├── file_reader.py         # Reads documents from disk
-│   └── logger.py 
-├── static/                   # GUI relates
-|   ├── css/                  # GUI relates
-|   ├── js/                   # GUI relates
-├── templates/                # GUI relates
-├── data/                     # Data - derieved from PUBMED interface
-    |── N_abstracts.txt
-
-             # Logging setup
-```
-
----
-
-## How It Works
-
-1. **Read and clean the document** from a given file path.
-2. **Preprocess the text** by removing irrelevant lines.
-3. **Split into overlapping chunks** of varying sizes (400, 600, 800 tokens).
-4. For each chunk size:
-
-   * Query the LLM using an initial prompt.
-   * Retrieve top relevant chunks using semantic similarity.
-   * Score each chunk using the LLM.
-   * Filter out low-relevance results.
-   * Construct a final RAG prompt and get the final answer.
-   * Log scores, answers, and timing.
-
----
+4. **Start chatting**:
+   - Upload your medical documents to the specified file path
+   - Ask questions like "What are the possible Parkinson treatments?"
+   - View processing logs in the expandable section
 
 ## Configuration
 
-All runtime parameters are stored in `config.py`, including:
+Key settings in `config.py`:
+- `CHUNK_SIZE`: Document chunk size (default: 600)
+- `RETRIEVE_TOP_K`: Number of documents to retrieve (default: 5)
+- `BOOL_CHROMADB`: Use ChromaDB vs in-memory embeddings
+- `TRANSFORMER_MODEL`: Embedding model (default: PubMedBERT)
 
-* `FILE_PATH`: Path to the document
-* `MODEL_NAME`: Name of the Ollama model (e.g., `llama3`, `mistral`)
-* `OLLAMA_HOST`: URL to the local Ollama server
-* `MIN_RELEVANCE_SCORE`: Threshold for filtering out low-quality chunks
-* `LOG_FILE`: File path for logs
-* `LOG_LEVEL`: Logging verbosity (e.g., `INFO`, `DEBUG`)
+## Architecture
 
----
-
-## Running the Script 
-### Option 1
-1. Start your Ollama server locally:
-
-   ```bash
-   ollama run llama3
-   ```
-
-2. Run the pipeline:
-
-   ```bash
-   python main.py
-   ```
-
-3. View results in your configured log file.
-
-### Option 2
-
-1. Run from app.py
-
----
-
-##  Example Use Case
-
-Query:
-
-> *"What are the possible Parkinson treatments?"*
-
-The pipeline will return:
-
-* Relevant text chunks
-* LLM-generated answer based on retrieved context
-* Scoring to rank result quality
-
----
-
-##  Requirements
-
-* Python 3.10+
-* Install dependencies:
-
-```bash
-pip install -r requirements.txt
+```
+User Query → Document Chunking → Embedding → Retrieval → LLM Response
+                                     ↓
+                            ChromaDB/In-Memory Storage
 ```
 
-(You may need to add this file manually based on your project imports.)
+## File Structure
 
----
+- `app_streamlit.py` - Streamlit web interface
+- `main.py` - Core RAG pipeline
+- `config.py` - Configuration settings
+- `transformers_embed.py` - Text embedding utilities
+- `test_chroma.py` - ChromaDB integration
+- `text_split.py` - Document chunking
+- `prompts_formatted.py` - LLM prompt templates
 
-##  Notes
+## Requirements
 
-* For local use only (with Ollama) — no external API calls.
-* Designed for experimentation and fast iteration on document-based QA tasks.
+- Python 3.8+
+- GROQ API key (recommended) or Ollama setup
+- Medical documents in text format
 
----
+## Notes
 
-Would you like me to generate a `requirements.txt` file as well based on your imports?
+- First run will be slower as it processes and embeds documents
+- Subsequent queries use cached embeddings for faster response
+- Optimized for medical/scientific content but works with general documents
